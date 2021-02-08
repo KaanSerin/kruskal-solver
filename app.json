@@ -1,0 +1,12 @@
+{
+  "name": "kruskal-solver",
+  "displayName": "kruskal-solver",
+  "expo": {
+    "name": "kruskal-solver",
+    "slug": "kruskal-solver",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
