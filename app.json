@@ -1,12 +1,16 @@
 {
   "name": "kruskal-solver",
-  "displayName": "kruskal-solver",
+  "displayName": "Kruskal Solver",
   "expo": {
     "name": "kruskal-solver",
+    "icon": "./assets/app-icon.png",
     "slug": "kruskal-solver",
-    "version": "1.0.0",
+    "version": "0.0.1",
     "assetBundlePatterns": [
       "**/*"
-    ]
+    ],
+    "android": {
+      "package": "com.kaanserin.kruskalsolver"
+    }
   }
 }
