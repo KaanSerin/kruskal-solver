@@ -1,10 +1,10 @@
 export default class Edge {
   public id: string;
-  public source: string;
-  public dest: string;
+  public source: number;
+  public dest: number;
   public weight: number;
 
-  constructor(id: string, source: string, dest: string, weight: number) {
+  constructor(id: string, source: number, dest: number, weight: number) {
     this.id = id;
     this.source = source;
     this.dest = dest;

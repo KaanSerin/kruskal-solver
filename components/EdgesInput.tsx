@@ -8,6 +8,7 @@ import Edge from './Edge';
 export interface EdgesInputProps {
   edges: Edge[];
   onAddEdge: () => void;
+  onRemoveEdge: (id: string) => void;
   onInputChange: (
     id: string,
     node: 'source' | 'weight' | 'dest',
@@ -18,6 +19,7 @@ export interface EdgesInputProps {
 const EdgesInput: React.FunctionComponent<EdgesInputProps> = ({
   edges,
   onAddEdge,
+  onRemoveEdge,
   onInputChange,
 }: EdgesInputProps) => {
   return (
@@ -30,8 +32,9 @@ const EdgesInput: React.FunctionComponent<EdgesInputProps> = ({
               onChangeText={(text) => onInputChange(edge.id, 'source', text)}
               style={styles.weightInput}
               multiline={false}
+              keyboardType={'numeric'}
               maxLength={2}
-              value={edge.source}
+              value={edge.source.toString()}
             />
             <View style={styles.weightArrow}>
               <TextInput
@@ -49,24 +52,18 @@ const EdgesInput: React.FunctionComponent<EdgesInputProps> = ({
               style={styles.weightInput}
               multiline={false}
               maxLength={2}
-              value={edge.dest}
+              keyboardType={'numeric'}
+              value={edge.dest.toString()}
             />
+            <TouchableNativeFeedback onPress={() => onRemoveEdge(edge.id)}>
+              <MaterialCommunityIcons
+                name="close-circle"
+                size={28}
+                color="white"
+              />
+            </TouchableNativeFeedback>
           </View>
         ))}
-        {/* <View style={styles.edgeContainer}>
-          <TextInput multiline={false} maxLength={2} style={styles.edgeInput} />
-          <View style={styles.weightArrow}>
-            <TextInput
-              multiline={false}
-              //   maxLength={2}
-              keyboardType="numeric"
-              style={styles.weightInput}
-            />
-            <FontAwesome name="arrows-h" size={42} color="white" />
-          </View>
-
-          <TextInput multiline={false} maxLength={2} style={styles.edgeInput} />
-        </View> */}
         <View style={styles.addEdgeArea}>
           <TouchableNativeFeedback onPress={onAddEdge}>
             <MaterialCommunityIcons
@@ -94,6 +91,7 @@ const styles = StyleSheet.create({
     color: '#fff',
     width: 40,
     height: 40,
+    marginRight: '10%',
     borderBottomWidth: 1,
     borderBottomColor: '#ff4e4e',
   },
@@ -104,15 +102,10 @@ const styles = StyleSheet.create({
   },
   edgeContainer: {
     display: 'flex',
+    margin: 'auto',
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  edgeInput: {
-    width: '30%',
-    height: 40,
-    borderBottomWidth: 1,
-    borderBottomColor: '#ff4e4e',
+    justifyContent: 'center',
   },
   addEdgeArea: {
     width: '100%',
