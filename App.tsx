@@ -1,6 +1,6 @@
-import React, { FunctionComponent, useState } from 'react';
+import React, { FunctionComponent, useState, useEffect } from 'react';
 import AppLoading from 'expo-app-loading';
-import { StyleSheet, Text, View, Button, TextInput } from 'react-native';
+import { StyleSheet, Text, View, Button } from 'react-native';
 import {
   useFonts,
   Lato_700Bold,
@@ -13,15 +13,27 @@ import EdgesInput from './components/EdgesInput';
 import { v4 as uuid } from 'uuid';
 import Edge from './components/Edge';
 import CalculateMST from './CalculateMST';
+import * as ScreenOrientation from 'expo-screen-orientation';
 
 const App: FunctionComponent = () => {
   const [noOfNodes, setNoOfNodes] = useState(0);
   const [mst, setMST] = useState([] as Edge[]);
   const [showMST, setShowMST] = useState(false);
-  const [edges, SetEdges] = useState([new Edge(uuid(), '', '', 1)]);
+  const [showMSTError, setShowMSTError] = useState(false);
+  const [edges, SetEdges] = useState([new Edge(uuid(), 0, 0, 1)]);
   const [fontsLoaded] = useFonts({
     Lato_700Bold,
     Lato_400Regular,
+  });
+
+  useEffect(() => {
+    async function changeScreenOrientation() {
+      await ScreenOrientation.lockAsync(
+        ScreenOrientation.OrientationLock.PORTRAIT
+      );
+    }
+    changeScreenOrientation();
+    console.log('dahadsghads');
   });
 
   const onRemoveEdge = (id: string) => {
@@ -31,16 +43,24 @@ const App: FunctionComponent = () => {
   };
 
   const onAddEdge = () => {
-    const newEdge = new Edge(uuid(), '', '', 1);
+    const newEdge = new Edge(uuid(), 0, 0, 1);
     console.log('Pressed button');
     SetEdges([...edges, newEdge]);
   };
 
   const onCalculateMST = () => {
-    const mst = CalculateMST(edges, noOfNodes);
-    setMST(mst);
-    setShowMST(true);
-    console.log('Calculated MST');
+    try {
+      const [mst, noOfVertices] = CalculateMST(edges);
+      setMST(mst);
+      setNoOfNodes(noOfVertices);
+      setShowMSTError(false);
+      setShowMST(true);
+    } catch (error) {
+      console.error(error);
+      setMST([]);
+      setShowMST(false);
+      setShowMSTError(true);
+    }
   };
 
   const onInputChange = (
@@ -66,6 +86,7 @@ const App: FunctionComponent = () => {
     return (
       <View style={styles.container}>
         <KeyboardAwareScrollView
+          showsVerticalScrollIndicator={false}
           extraHeight={90}
           resetScrollToCoords={{ x: 0, y: 0 }}
         >
@@ -76,13 +97,7 @@ const App: FunctionComponent = () => {
           </View>
           <ComponentContainer width="50%" borderRadius={8}>
             <View style={styles.noOfNodes}>
-              <Text style={styles.detailsText}>No of Nodes:</Text>
-              <TextInput
-                style={styles.noOfNodesInput}
-                value={noOfNodes.toString()}
-                onChangeText={(text) => setNoOfNodes(+text)}
-                keyboardType="numeric"
-              ></TextInput>
+              <Text style={styles.detailsText}>No of Nodes: {noOfNodes}</Text>
             </View>
           </ComponentContainer>
 
@@ -104,6 +119,11 @@ const App: FunctionComponent = () => {
           <ComponentContainer width="100%">
             <View>
               <Text style={styles.mstTitle}>Minimum Spanning Tree</Text>
+              {showMSTError ? (
+                <Text style={styles.errorMessage}>
+                  Please enter a valid tree!
+                </Text>
+              ) : null}
               {showMST
                 ? mst.map((edge) => (
                     <View style={styles.edgeContainer} key={edge.id}>
@@ -148,12 +168,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
   },
-  noOfNodesInput: {
-    fontFamily: 'Lato_400Regular',
-    color: '#fff',
-    fontSize: 18,
-    marginLeft: 6,
-  },
   container: {
     minHeight: '100%',
     minWidth: '100%',
@@ -193,5 +207,11 @@ const styles = StyleSheet.create({
     display: 'flex',
     textAlign: 'center',
     justifyContent: 'center',
+  },
+  errorMessage: {
+    color: '#ff4e4e',
+    textAlign: 'center',
+    fontSize: 18,
+    fontWeight: '700',
   },
 });
