@@ -2,10 +2,10 @@
   "name": "Kruskal's Algorithm Solver",
   "displayName": "Kruskal's Algorithm Solver",
   "expo": {
-    "name": "kruskal-solver",
-    "icon": "./assets/app-icon.png",
+    "name": "Kruskal's Algorithm Solver",
+    "icon": "./assets/app-logo.jpg",
     "slug": "kruskal-solver",
-    "version": "0.0.9",
+    "version": "0.1",
     "orientation": "portrait",
     "assetBundlePatterns": [
       "**/*"

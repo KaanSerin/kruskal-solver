@@ -116,34 +116,40 @@ const App: FunctionComponent = () => {
             />
           </View>
 
-          <ComponentContainer width="100%">
-            <View>
-              <Text style={styles.mstTitle}>Minimum Spanning Tree</Text>
-              {showMSTError ? (
-                <Text style={styles.errorMessage}>
-                  Please enter a valid tree!
-                </Text>
-              ) : null}
-              {showMST
-                ? mst.map((edge) => (
-                    <View style={styles.edgeContainer} key={edge.id}>
-                      <Text style={styles.mstNode}>
-                        {edge.source.toString()}
-                      </Text>
-                      <View style={styles.weightArrow}>
+          {showMST ? (
+            <ComponentContainer width="100%">
+              <View>
+                <Text style={styles.mstTitle}>Minimum Spanning Tree</Text>
+                {showMSTError ? (
+                  <Text style={styles.errorMessage}>
+                    Please enter a valid tree!
+                  </Text>
+                ) : null}
+                {showMST
+                  ? mst.map((edge) => (
+                      <View style={styles.edgeContainer} key={edge.id}>
                         <Text style={styles.mstNode}>
-                          {edge.weight.toString()}{' '}
+                          {edge.source.toString()}
                         </Text>
-                        <FontAwesome name="arrows-h" size={42} color="white" />
+                        <View style={styles.weightArrow}>
+                          <Text style={styles.mstNode}>
+                            {edge.weight.toString()}{' '}
+                          </Text>
+                          <FontAwesome
+                            name="arrows-h"
+                            size={42}
+                            color="white"
+                          />
+                        </View>
+                        <Text style={styles.mstNode}>
+                          {edge.dest.toString()}{' '}
+                        </Text>
                       </View>
-                      <Text style={styles.mstNode}>
-                        {edge.dest.toString()}{' '}
-                      </Text>
-                    </View>
-                  ))
-                : null}
-            </View>
-          </ComponentContainer>
+                    ))
+                  : null}
+              </View>
+            </ComponentContainer>
+          ) : null}
         </KeyboardAwareScrollView>
       </View>
     );
