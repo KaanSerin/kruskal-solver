@@ -2,8 +2,7 @@
 
 <img src="assets/screenshot.jpg" width="360" />
 
-## My first React Native Project
-
+## Features
 - React Native
 - Typescript
 - Expo Cli
